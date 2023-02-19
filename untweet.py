@@ -10,6 +10,19 @@ from sentiment_analysis_spanish import sentiment_analysis
 import seaborn as sns
 import matplotlib.pyplot as plt
   
+# Función para preprocesar el contenido de los tuits y quitar palabras no relevantes para el analisis
+def preprocess_tweet(tweet):
+    tweet_words = []
+    
+    for word in tweet.split(' '):
+        if word.startswith('@') and len(word) > 1:
+            word = '@user'
+        elif word.startswith('http'):
+            word = 'http'
+        tweet_words.append(word)
+    tweet_proc = ' '.join(tweet_words)
+    return (tweet_proc)
+            
 
 
 starting_time = timeit.default_timer()
@@ -67,7 +80,7 @@ max_i = -1
 
 print(my_tweets)
 for i, tweet in enumerate(my_tweets):
-    preproc_tweet = tweet
+    preproc_tweet = preprocess_tweet(tweet)
     feeling = sentiment.sentiment(preproc_tweet)
     acum_feeling += feeling
     if feeling < min_feeling:
@@ -77,7 +90,6 @@ for i, tweet in enumerate(my_tweets):
         max_feeling = feeling
         max_i = i
     df.Score[i] = feeling
-    print (i, ':   ', tweet[:50],  '  ', feeling)
 
 print('Guardando a archivo Excel...')
 df.to_excel('Tweet Results.xlsx', sheet_name='Results')
