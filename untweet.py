@@ -32,6 +32,7 @@ def preprocess_tweet(tweet):
             word = 'http'
         tweet_words.append(word)
     tweet_proc = ' '.join(tweet_words)
+       
     return (tweet_proc)
             
 # Hace el sentiment analysis NLTK para un texto en español
